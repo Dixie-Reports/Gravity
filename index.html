@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Authority Scale — Client Delivery Microsite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tell search engines not to index this site -->
+  <meta name="robots" content="noindex,nofollow" />
+
+  <style>
+    :root{
+      --bg:#0B0F14; --paper:#0F141B; --border:#1F2937;
+      --text:#E5E7EB; --muted:#9CA3AF; --accent:#22D3EE;
+      --em-st:#10B981; --em-md:#059669; --em-end:#047857; --neutral:#4B5563;
+    }
+    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
+    .container{max-width:1120px;margin:0 auto;padding:32px 16px;}
+    .gradient-bg{
+      position:fixed; inset:0; z-index:-1;
+      background:
+        radial-gradient(1200px 600px at 85% -10%, rgba(16,185,129,0.20), transparent 60%),
+        radial-gradient(800px 400px at -10% 30%, rgba(34,211,238,0.12), transparent 55%),
+        linear-gradient(180deg, #0B0F14 0%, #0B0F14 100%);
+    }
+    .chip{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid rgba(16,185,129,.4);border-radius:14px;background:rgba(16,185,129,.10);color:#a7f3d0;font-weight:600;font-size:12px;letter-spacing:.04em;}
+    h1{font-size:34px;line-height:1.1;margin:12px 0 0;}
+    .grad-text{
+      background:linear-gradient(90deg,#a7f3d0,#67e8f9,#22d3ee);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .muted{color:var(--muted)}
+    .row{display:flex;flex-wrap:wrap;gap:16px}
+    .col{flex:1 1 0}
+    .col-2{flex:0 0 calc(50% - 8px)}
+    .col-3{flex:0 0 calc(33.333% - 10.7px)}
+    .col-4{flex:0 0 calc(25% - 12px)}
+    @media (max-width:900px){.col-3,.col-4{flex:0 0 100%} .col-2{flex:0 0 100%}}
+    .card{background:var(--paper);border:1px solid var(--border);border-radius:18px;padding:16px}
+    .section{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:24px;margin-top:16px}
+    .section h2{margin:0 0 6px;font-size:24px}
+    .tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#a7f3d0;opacity:.85}
+    .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(16,185,129,.5);background:rgba(16,185,129,.1);color:#a7f3d0;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600}
+    .stat{display:flex;flex-direction:column;gap:4px}
+    .stat .label{font-size:13px;color:var(--muted);letter-spacing:.02em}
+    .stat .value{font-size:26px;font-weight:700}
+    .kicker{font-size:13px;color:#94a3b8}
+    .btn{border:1px solid var(--border);background:#0b1320;padding:8px 14px;border-radius:12px;color:#fff;font-weight:600;cursor:pointer}
+    .btn:hover{background:#0f172a}
+    .list{margin:10px 0 0 18px;color:#aab4c3;font-size:14px}
+    .list li{margin:4px 0}
+    .grid{display:grid;gap:16px}
+    .grid-2{grid-template-columns:2fr 1fr}
+    .grid-3{grid-template-columns:2fr 1fr 1fr}
+    @media (max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+    .footer{border-top:1px solid var(--border);padding-top:18px;margin-top:18px;color:#9aa3b2;font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+    /* SVG helpers */
+    .chart-card{height:260px;border:1px solid var(--border);border-radius:16px;background:#0c1320;padding:8px}
+    .center{display:flex;align-items:center;gap:10px}
+  </style>
+</head>
+<body>
+  <div class="gradient-bg"></div>
+
+  <div class="container">
+    <header class="row" style="align-items:center;justify-content:space-between;gap:16px">
+      <div>
+        <span class="chip">Authority Scale — Client Delivery</span>
+        <h1 class="grad-text">LinkedIn Progress Report</h1>
+        <p class="muted" style="max-width:640px;margin-top:8px">
+          While your team finalizes brand decisions, we’ve maintained momentum. Here’s what’s been done and the results to date.
+        </p>
+      </div>
+      <div class="center">
+        <span class="badge">Confidential</span>
+        <button class="btn" onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <section class="row" style="margin-top:16px">
+      <div class="card col-4 stat">
+        <div class="label">Profile Views (90d)</div>
+        <div class="value" id="s_90">183</div>
+        <div class="kicker">Total visibility</div>
+      </div>
+      <div class="card col-4 stat">
+        <div class="label">Views (28d)</div>
+        <div class="value" id="s_28">152</div>
+        <div class="kicker">83% of 90d total</div>
+      </div>
+      <div class="card col-4 stat">
+        <div class="label">Views (7d)</div>
+        <div class="value" id="s_7">142</div>
+        <div class="kicker">Spike during activation</div>
+      </div>
+      <div class="card col-4 stat">
+        <div class="label">7–14d Growth</div>
+        <div class="value" id="s_g">+33%</div>
+        <div class="kicker">Week-over-week</div>
+      </div>
+    </section>
+
+    <!-- 1. Profile Visibility Growth -->
+    <section class="section">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div>
+          <div class="tag">Visibility Signal™</div>
+          <h2>Profile Visibility Growth</h2>
+        </div>
+        <span class="badge">+33% in 14d</span>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="chart-card">
+          <svg id="areaChart" viewBox="0 0 600 220" width="100%" height="100%"></svg>
+        </div>
+        <div class="card">
+          <p class="kicker" style="line-height:1.6;color:#cbd5e1">
+            <strong style="color:#e5e7eb">What this shows:</strong> Almost all profile traffic arrived during our active period.
+            The shaded area marks the last 7 days (142 views), within a 28-day window totaling 152 views.
+          </p>
+          <ul class="list">
+            <li>183 views in 90 days</li>
+            <li>152 in last 28 days</li>
+            <li>142 in last 7 days</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Authority Activation Messages -->
+    <section class="section">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div>
+          <div class="tag">Message Protocol™</div>
+          <h2>Authority Activation Messages</h2>
+        </div>
+        <span class="badge" id="replyBadge">~50% reply rate</span>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card" style="grid-column:1 / span 2">
+          <div class="chart-card" style="height:260px">
+            <svg id="stackedBar" viewBox="0 0 600 220" width="100%" height="100%"></svg>
+          </div>
+          <div class="center" style="flex-wrap:wrap;margin-top:10px">
+            <span class="badge">145 connections messaged</span>
+            <span class="badge">72 replied</span>
+            <span class="badge">1 hot lead → call requested</span>
+            <span class="badge">Funnel not yet active</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4 style="margin:0 0 8px;font-size:14px;color:#e5e7eb">Benchmark Comparison</h4>
+          <div class="chart-card" style="height:220px">
+            <svg id="benchChart" viewBox="0 0 600 220" width="100%" height="100%"></svg>
+          </div>
+          <p class="kicker" style="margin-top:8px">
+            Typical ranges: DMs (5–20%), LinkedIn Paid Email Services (18–25%).
+            Your current reply rate is ~50%.
+          </p>
+        </div>
+
+        <div class="card" style="grid-column:1 / -1">
+          <p class="kicker" style="line-height:1.6;color:#cbd5e1">
+            Most people pitch immediately or use a disguised “give.” Your message is neutral and confident — no pressure, no pretense — which is why people reply at ~50%.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Pipeline Activation -->
+    <section class="section">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div>
+          <div class="tag">Hit List Process™</div>
+          <h2>Pipeline Activation</h2>
+        </div>
+        <span class="badge">Call request pre-funnel</span>
+      </div>
+
+      <div class="row" style="margin-top:6px">
+        <!-- 5 steps -->
+        <div class="card col-3" style="flex:1 1 0; position:relative">
+          <div class="kicker" style="color:#e5e7eb;font-weight:600">Step 1</div>
+          <div>Replies → Hit List</div>
+          <div class="kicker" style="margin-top:8px">My team action</div>
+          <div style="position:absolute;right:-12px;top:50%;transform:translateY(-50%);display:none" class="arrow-md">
+            →
+          </div>
+        </div>
+        <div class="card col-3" style="flex:1 1 0; position:relative">
+          <div class="kicker" style="color:#e5e7eb;font-weight:600">Step 2</div>
+          <div>Engage (Like/Comment)</div>
+          <div class="kicker" style="margin-top:8px">Your team action</div>
+        </div>
+        <div class="card col-3" style="flex:1 1 0; position:relative">
+          <div class="kicker" style="color:#e5e7eb;font-weight:600">Step 3</div>
+          <div>DM Nurture Sequence Funnel™</div>
+          <div class="kicker" style="margin-top:8px">Your team action (launching next)</div>
+        </div>
+        <div class="card col-3" style="flex:1 1 0; position:relative">
+          <div class="kicker" style="color:#e5e7eb;font-weight:600">Step 4</div>
+          <div>Second Touch Momentum Funnel™ (No Response 7d)</div>
+          <div class="kicker" style="margin-top:8px">My team action</div>
+        </div>
+        <div class="card col-3" style="flex:1 1 0; position:relative">
+          <div class="kicker" style="color:#e5e7eb;font-weight:600">Step 5</div>
+          <div>Booked Call</div>
+          <div class="kicker" style="margin-top:8px">Already 1 requested (pre-funnel)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3b. What Happens Next -->
+    <section class="section">
+      <div class="tag">Two Tracks</div>
+      <h2>What Happens Next</h2>
+      <div class="row" style="margin-top:8px">
+        <div class="card col-2">
+          <h4 style="margin:0 0 8px;font-size:16px;color:#e5e7eb">Track One: Managed on My Side</h4>
+          <ul class="list">
+            <li>Add every reply to the <strong style="color:#e5e7eb">Hit List</strong>.</li>
+            <li>For anyone who hasn’t replied after 7 days, we send a second message and start the <strong style="color:#e5e7eb">Second Touch Momentum Funnel™</strong>.</li>
+            <li>Continue first messages to new ICP connections to grow the pool.</li>
+          </ul>
+        </div>
+        <div class="card col-2">
+          <h4 style="margin:0 0 8px;font-size:16px;color:#e5e7eb">Track Two: Managed on Your Side</h4>
+          <ul class="list">
+            <li>You/your team engage their posts (likes/comments) to keep you visible and top of mind.</li>
+            <li>Follow up with the <strong style="color:#e5e7eb">72 replies</strong> (~1 week later) to move toward a call.</li>
+            <li>Use the <strong style="color:#e5e7eb">DM Nurture Sequence Funnel™</strong> scripts and timing I provide.</li>
+            <li>If preferred, my team can manage this as an add-on service.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Engagement & Visibility Boost -->
+    <section class="section">
+      <div class="tag">Engagement Ratio™</div>
+      <h2>Engagement & Visibility Boost</h2>
+      <div class="grid grid-2" style="margin-top:8px">
+        <div class="card">
+          <div class="chart-card" style="height:260px">
+            <svg id="engageChart" viewBox="0 0 600 220" width="100%" height="100%"></svg>
+          </div>
+        </div>
+        <div class="card">
+          <p class="kicker" style="line-height:1.6;color:#cbd5e1">
+            <strong style="color:#e5e7eb">What this shows:</strong> Half of new connections are already interacting (72 of 145).
+            This is a strong base for content launch — posts will start with traction instead of zero.
+          </p>
+          <ul class="list">
+            <li>Total new connections: 145</li>
+            <li>Engaged: 72</li>
+            <li>Not yet engaged: 73</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Summary of Impact -->
+    <section class="section">
+      <div class="tag">Impact Dashboard™</div>
+      <h2>Summary of Impact</h2>
+      <div class="row" style="margin-top:8px">
+        <div class="card col-4 stat"><div class="label">Visibility Growth</div><div class="value">+33%</div><div class="kicker">Past 14 days</div></div>
+        <div class="card col-4 stat"><div class="label">Reply Rate</div><div class="value">~50%</div><div class="kicker">vs 15–25% typical</div></div>
+        <div class="card col-4 stat"><div class="label">Hot Leads</div><div class="value">1</div><div class="kicker">Call requested pre-funnel</div></div>
+        <div class="card col-4 stat"><div class="label">Hit List Size</div><div class="value">72</div><div class="kicker">Replies being nurtured</div></div>
+      </div>
+      <p class="kicker" style="margin-top:10px">
+        Data as of Aug 18, 2025. Figures reflect your provided stats: 183 (90d), 152 (28d), 142 (7d), +33% growth, 145 connections, 72 replies (~50%), and 1 hot lead requesting a call before the DM Nurture Sequence Funnel™ is live.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <div>© 2025 Authority Scale™ — Client Delivery Microsite</div>
+      <div>Press “Print / Save PDF” for a shareable export</div>
+    </footer>
+  </div>
+
+  <script>
+    // ----- DATA ----- //
+    const summary = {
+      ninetyDayTotal: 183,
+      last28: 152,
+      last7: 142,
+      growth14dPct: 33,
+      newConnections: 145,
+      replies: 72,
+      nonEngaged: 73
+    };
+
+    // Build last 28 days array
+    const last28 = Array.from({length:28},(_,i)=>({day:i+1, views:0}));
+    [1,3,6,9,12,16,18,20,21,5].forEach(d => last28[d-1].views = (last28[d-1].views||0)+1);
+    [18,19,20,21,20,22,22].forEach((v,idx)=>{ last28[21+idx].views = v; });
+
+    // ----- HELPERS ----- //
+    function $(sel){ return document.querySelector(sel); }
+    function linePath(points){
+      return points.map((p,i)=> (i? 'L':'M') + p.x + ' ' + p.y).join(' ');
+    }
+    function areaPath(points, baseY){
+      return 'M'+points[0].x+' '+baseY+' ' + points.map((p)=>'L'+p.x+' '+p.y).join(' ') + ' L'+points[points.length-1].x+' '+baseY+' Z';
+    }
+    function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
+
+    // ----- AREA CHART (Profile Views) ----- //
+    (function drawArea(){
+      const svg = $('#areaChart');
+      const W=600, H=220, pad=30;
+      const chartW = W - pad*2, chartH = H - pad*2;
+      const maxY = Math.max(...last28.map(d=>d.views), 24);
+      const xStep = chartW/(last28.length-1);
+      const toX = i => pad + i*xStep;
+      const toY = v => pad + (chartH - (v/maxY)*chartH);
+
+      // axes
+      svg.innerHTML = '';
+      const grid = document.createElementNS('http://www.w3.org/2000/svg','g');
+      for(let i=0;i<=4;i++){
+        const y = pad + i*(chartH/4);
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', pad); line.setAttribute('x2', pad+chartW);
+        line.setAttribute('y1', y);   line.setAttribute('y2', y);
+        line.setAttribute('stroke', '#1f2937'); line.setAttribute('stroke-width','1');
+        grid.appendChild(line);
+      }
+      svg.appendChild(grid);
+
+      // last 7 days shade
+      const shade = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      shade.setAttribute('x', toX(21)); // day 22 index = 21
+      shade.setAttribute('y', pad);
+      shade.setAttribute('width', chartW - (toX(21)-pad));
+      shade.setAttribute('height', chartH);
+      shade.setAttribute('fill', '#10B981'); shade.setAttribute('opacity','0.10');
+      svg.appendChild(shade);
+
+      // points
+      const pts = last28.map((d,i)=>({x:toX(i), y:toY(d.views)}));
+
+      // area
+      const a = document.createElementNS('http://www.w3.org/2000/svg','path');
+      a.setAttribute('d', areaPath(pts, pad+chartH));
+      a.setAttribute('fill', 'url(#gradArea)');
+      svg.appendChild(a);
+
+      // line
+      const l = document.createElementNS('http://www.w3.org/2000/svg','path');
+      l.setAttribute('d', linePath(pts));
+      l.setAttribute('fill', 'none'); l.setAttribute('stroke', '#059669'); l.setAttribute('stroke-width','2');
+      svg.appendChild(l);
+
+      // gradient def
+      const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+      const grad = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+      grad.setAttribute('id','gradArea'); grad.setAttribute('x1','0'); grad.setAttribute('x2','1'); grad.setAttribute('y1','0'); grad.setAttribute('y2','0');
+      const s1=document.createElementNS('http://www.w3.org/2000/svg','stop'); s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#10B981'); s1.setAttribute('stop-opacity','.35');
+      const s2=document.createElementNS('http://www.w3.org/2000/svg','stop'); s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#047857'); s2.setAttribute('stop-opacity','.15');
+      grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad); svg.appendChild(defs);
+    })();
+
+    // ----- STACKED SINGLE BAR (Connections→Replies) ----- //
+    (function drawStacked(){
+      const svg = $('#stackedBar'); svg.innerHTML='';
+      const W=600,H=220,pad=30, barH=40;
+      const total = summary.newConnections; //145
+      const replied = summary.replies;      //72
+      const not = total - replied;          //73
+      const chartW = W - pad*2;
+
+      const toW = (v)=> (v/total)*chartW;
+
+      // grid bg
+      const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      bg.setAttribute('x',pad); bg.setAttribute('y',H/2 - barH/2);
+      bg.setAttribute('width',chartW); bg.setAttribute('height',barH);
+      bg.setAttribute('fill','#1f2937'); bg.setAttribute('rx','8'); svg.appendChild(bg);
+
+      // replied (emerald)
+      const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      r.setAttribute('x',pad); r.setAttribute('y',H/2 - barH/2);
+      r.setAttribute('width',toW(replied)); r.setAttribute('height',barH);
+      r.setAttribute('fill','#10B981'); r.setAttribute('rx','8'); svg.appendChild(r);
+
+      // labels
+      function label(x, text, anchor='start'){
+        const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t.setAttribute('x', x); t.setAttribute('y', H/2 - barH/2 - 8);
+        t.setAttribute('fill','#9CA3AF'); t.setAttribute('font-size','12'); t.setAttribute('text-anchor', anchor);
+        t.textContent = text; svg.appendChild(t);
+      }
+      label(pad,'Connections');
+      // values on segments
+      function midText(x, w, txt){
+        const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t.setAttribute('x', x + w/2); t.setAttribute('y', H/2 + 4);
+        t.setAttribute('fill','#e5e7eb'); t.setAttribute('font-size','12'); t.setAttribute('text-anchor','middle');
+        t.textContent = txt; svg.appendChild(t);
+      }
+      midText(pad,toW(replied), `${replied} Replied`);
+      if (not>0){
+        const nr = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        nr.setAttribute('x',pad+toW(replied)); nr.setAttribute('y',H/2 - barH/2);
+        nr.setAttribute('width',toW(not)); nr.setAttribute('height',barH);
+        nr.setAttribute('fill','#111827'); nr.setAttribute('rx','8'); svg.appendChild(nr);
+        midText(pad+toW(replied),toW(not), `${not} No Reply Yet`);
+      }
+    })();
+
+    // ----- BENCHMARK BARS (vertical layout) ----- //
+    (function drawBench(){
+      const svg = $('#benchChart'); svg.innerHTML='';
+      const W=600,H=220,pad=14;
+      const items = [
+        {label:'DM Avg (5–20%)', rate:20, color:'#4B5563'},
+        {label:'LinkedIn Paid Email Services (18–25%)', rate:25, color:'#4B5563'},
+        {label:'Your Reply Rate (~50%)', rate:Math.round((summary.replies/summary.newConnections)*100), color:'#059669'}
+      ];
+      const max=60;
+      const barH=26, gap=20;
+      const leftW = 310; // label column
+      // labels + bars
+      items.forEach((it, i)=>{
+        const y = pad + i*(barH+gap) + 20;
+        // label
+        const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+        text.setAttribute('x', 8); text.setAttribute('y', y+barH/2+4);
+        text.setAttribute('fill','#9CA3AF'); text.setAttribute('font-size','12');
+        text.textContent = it.label; svg.appendChild(text);
+        // bar bg
+        const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        bg.setAttribute('x', leftW); bg.setAttribute('y', y);
+        bg.setAttribute('width', W-leftW-20); bg.setAttribute('height', barH);
+        bg.setAttribute('fill','#0f172a'); bg.setAttribute('rx','8'); svg.appendChild(bg);
+        // bar fg
+        const w = (it.rate/max) * (W-leftW-20);
+        const fg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        fg.setAttribute('x', leftW); fg.setAttribute('y', y);
+        fg.setAttribute('width', Math.max(1,w)); fg.setAttribute('height', barH);
+        fg.setAttribute('fill', it.color); fg.setAttribute('rx','8'); svg.appendChild(fg);
+        // value
+        const val = document.createElementNS('http://www.w3.org/2000/svg','text');
+        val.setAttribute('x', leftW + w + 6); val.setAttribute('y', y+barH/2+4);
+        val.setAttribute('fill','#e5e7eb'); val.setAttribute('font-size','12');
+        val.textContent = it.rate + '%'; svg.appendChild(val);
+      });
+    })();
+
+    // ----- ENGAGEMENT (two bars) ----- //
+    (function drawEngage(){
+      const svg = $('#engageChart'); svg.innerHTML='';
+      const W=600,H=220,pad=40;
+      const items = [
+        {name:'Engaged', value: summary.replies, color:'#10B981'},
+        {name:'Not Yet Engaged', value: summary.nonEngaged, color:'#111827'}
+      ];
+      const max = Math.max(...items.map(d=>d.value));
+      const gap = 60; const barW = 120;
+      const xStart = (W - (barW*2 + gap))/2;
+      items.forEach((it, i)=>{
+        const x = xStart + i*(barW + gap);
+        const h = (it.value/max) * (H - pad*2);
+        const y = H - pad - h;
+        // bg axis
+        const base = document.createElementNS('http://www.w3.org/2000/svg','line');
+        base.setAttribute('x1', pad); base.setAttribute('x2', W-pad);
+        base.setAttribute('y1', H-pad); base.setAttribute('y2', H-pad);
+        base.setAttribute('stroke','#1f2937'); svg.appendChild(base);
+        // bar
+        const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        rect.setAttribute('x', x); rect.setAttribute('y', y);
+        rect.setAttribute('width', barW); rect.setAttribute('height', h);
+        rect.setAttribute('fill', it.color); rect.setAttribute('rx','8'); svg.appendChild(rect);
+        // label
+        const lab = document.createElementNS('http://www.w3.org/2000/svg','text');
+        lab.setAttribute('x', x + barW/2); lab.setAttribute('y', H - pad + 16);
+        lab.setAttribute('fill','#9CA3AF'); lab.setAttribute('font-size','12'); lab.setAttribute('text-anchor','middle');
+        lab.textContent = it.name; svg.appendChild(lab);
+        // value
+        const val = document.createElementNS('http://www.w3.org/2000/svg','text');
+        val.setAttribute('x', x + barW/2); val.setAttribute('y', y - 6);
+        val.setAttribute('fill','#e5e7eb'); val.setAttribute('font-size','12'); val.setAttribute('text-anchor','middle');
+        val.textContent = it.value; svg.appendChild(val);
+      });
+    })();
+  </script>
+</body>
+</html>
