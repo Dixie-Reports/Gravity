@@ -151,22 +151,32 @@
           </div>
         </div>
 
-        <div class="card">
-          <h4 style="margin:0 0 8px;font-size:14px;color:#e5e7eb">Benchmark Comparison</h4>
-          <div class="chart-card" style="height:220px">
-            <svg id="benchChart" viewBox="0 0 600 220" width="100%" height="100%"></svg>
-          </div>
-          <p class="kicker" style="margin-top:8px">
-            Typical ranges: DMs (5–20%), LinkedIn Paid Email Services (18–25%).
-            Your current reply rate is ~50%.
-          </p>
-        </div>
+        <!-- Removed small Benchmark card from here per instruction -->
 
         <div class="card" style="grid-column:1 / -1">
           <p class="kicker" style="line-height:1.6;color:#cbd5e1">
             Most people pitch immediately or use a disguised “give.” Your message is neutral and confident — no pressure, no pretense — which is why people reply at ~50%.
           </p>
         </div>
+      </div>
+    </section>
+
+    <!-- 2b. Benchmark Comparison (moved + enlarged) -->
+    <section class="section benchmark-section">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div>
+          <div class="tag">Benchmark</div>
+          <h2>Benchmark Comparison</h2>
+        </div>
+        <span class="badge">Legibility optimized</span>
+      </div>
+      <div class="card" style="padding:16px">
+        <div class="chart-card" style="height:380px">
+          <svg id="benchChartLarge" viewBox="0 0 900 300" width="100%" height="100%"></svg>
+        </div>
+        <p class="kicker" style="margin-top:10px">
+          Typical ranges: DMs (5–20%), LinkedIn Paid Email Services (18–25%). Your current reply rate is ~50%.
+        </p>
       </div>
     </section>
 
@@ -179,7 +189,6 @@
         </div>
         <span class="badge">Call request pre-funnel</span>
       </div>
-
       <div class="row" style="margin-top:6px">
         <!-- 5 steps -->
         <div class="card col-3" style="flex:1 1 0; position:relative">
@@ -414,41 +423,44 @@
       }
     })();
 
-    // ----- BENCHMARK BARS (vertical layout) ----- //
+    // ----- BENCHMARK BARS (moved + enlarged) ----- //
     (function drawBench(){
-      const svg = $('#benchChart'); svg.innerHTML='';
-      const W=600,H=220,pad=14;
+      const svg = document.querySelector('#benchChartLarge');
+      if(!svg){ return; }
+      const W=900,H=300,pad=14;
       const items = [
         {label:'DM Avg (5–20%)', rate:20, color:'#4B5563'},
         {label:'LinkedIn Paid Email Services (18–25%)', rate:25, color:'#4B5563'},
         {label:'Your Reply Rate (~50%)', rate:Math.round((summary.replies/summary.newConnections)*100), color:'#059669'}
       ];
       const max=60;
-      const barH=26, gap=20;
-      const leftW = 310; // label column
-      // labels + bars
+      const barH=44, gap=26;
+      const leftW = 360; // wider label column for readability
+
+      svg.innerHTML='';
+
       items.forEach((it, i)=>{
-        const y = pad + i*(barH+gap) + 20;
+        const y = pad + i*(barH+gap) + 34;
         // label
         const text = document.createElementNS('http://www.w3.org/2000/svg','text');
-        text.setAttribute('x', 8); text.setAttribute('y', y+barH/2+4);
-        text.setAttribute('fill','#9CA3AF'); text.setAttribute('font-size','12');
+        text.setAttribute('x', 12); text.setAttribute('y', y+barH/2+6);
+        text.setAttribute('fill','#9CA3AF'); text.setAttribute('font-size','16');
         text.textContent = it.label; svg.appendChild(text);
         // bar bg
         const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
         bg.setAttribute('x', leftW); bg.setAttribute('y', y);
-        bg.setAttribute('width', W-leftW-20); bg.setAttribute('height', barH);
-        bg.setAttribute('fill','#0f172a'); bg.setAttribute('rx','8'); svg.appendChild(bg);
+        bg.setAttribute('width', W-leftW-28); bg.setAttribute('height', barH);
+        bg.setAttribute('fill','#0f172a'); bg.setAttribute('rx','10'); svg.appendChild(bg);
         // bar fg
-        const w = (it.rate/max) * (W-leftW-20);
+        const w = (it.rate/max) * (W-leftW-28);
         const fg = document.createElementNS('http://www.w3.org/2000/svg','rect');
         fg.setAttribute('x', leftW); fg.setAttribute('y', y);
-        fg.setAttribute('width', Math.max(1,w)); fg.setAttribute('height', barH);
-        fg.setAttribute('fill', it.color); fg.setAttribute('rx','8'); svg.appendChild(fg);
+        fg.setAttribute('width', Math.max(2,w)); fg.setAttribute('height', barH);
+        fg.setAttribute('fill', it.color); fg.setAttribute('rx','10'); svg.appendChild(fg);
         // value
         const val = document.createElementNS('http://www.w3.org/2000/svg','text');
-        val.setAttribute('x', leftW + w + 6); val.setAttribute('y', y+barH/2+4);
-        val.setAttribute('fill','#e5e7eb'); val.setAttribute('font-size','12');
+        val.setAttribute('x', leftW + w + 10); val.setAttribute('y', y+barH/2+6);
+        val.setAttribute('fill','#e5e7eb'); val.setAttribute('font-size','18'); val.setAttribute('font-weight','700');
         val.textContent = it.rate + '%'; svg.appendChild(val);
       });
     })();
